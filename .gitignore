@@ -1,0 +1,11 @@
+# generated artifacts — NEVER commit (coordinated disclosure, no public PoC)
+out/
+findings/
+poc/
+*.dylib
+*_proof*.txt
+*.local.json
+# python / macOS noise
+__pycache__/
+*.pyc
+.DS_Store
