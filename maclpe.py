@@ -4,11 +4,10 @@ maclpe — macOS privileged-helper LPE analyzer (Phase 1)
 Detects the privileged-helper client-authorization-bypass class:
   C1 unauthenticated | C2 world-writable socket | C3 PID-racy | C4 team-req + injectable client | C5 cmd-inj | SECURE
 
-The Phase-1 win over the old triage.sh: it classifies the *runtime* requirement (identifier-pinned vs
-team-only) and checks *client injectability*, which is what made Waves Central a false-"SECURE".
+
 
 Usage:
-  maclpe.py --app "/Volumes/Waves Central 16.7.2/Waves Central.app"
+  maclpe.py --app "/Volumes/../xyz.app"
   maclpe.py --helper /path/to/helperbinary [--bundle /path/to/App.app]
 """
 import argparse, glob, json, os, plistlib, re, subprocess, sys, tempfile
@@ -100,8 +99,6 @@ def code_xrefs_to_string(b, s):
 
 
 def classify_requirement(b):
-    """returns (class, pinned_identifier, evidence). The Waves-fix: identifier in Info.plist alone != pinned;
-    it must be referenced from code at runtime."""
     s = sh(["strings", "-a", b])
     ids = sorted(set(re.findall(r'identifier &quot;([\w.\-]+)&quot;', s) +
                      re.findall(r'identifier "([\w.\-]+)"', s)))
